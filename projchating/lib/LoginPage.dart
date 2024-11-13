@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -8,6 +9,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  void login() async {
+    UserCredential user = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _email.text.trim(), password: _password.text.trim());
+    print("=========================================================");
+    print(user.user!.uid);
+    print("=========================================================");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +29,7 @@ class _LoginState extends State<Login> {
         color: const Color.fromARGB(255, 242, 248, 242),
         child: Center(
           child: Container(
-            height: 500,
+            height: 509,
             width: 550,
             margin: EdgeInsets.only(left: 20, right: 20),
             padding: EdgeInsets.all(20),
@@ -73,6 +85,7 @@ class _LoginState extends State<Login> {
                       ),
                       Expanded(
                           child: TextField(
+                        controller: _email,
                         decoration: InputDecoration(
                             border: InputBorder.none, hintText: "Email"),
                       ))
@@ -109,6 +122,7 @@ class _LoginState extends State<Login> {
                       ),
                       Expanded(
                           child: TextField(
+                        controller: _password,
                         decoration: InputDecoration(
                             border: InputBorder.none, hintText: "Password"),
                       ))
@@ -130,37 +144,6 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 50,
                 ),
-                //   Container(
-                //   height: 60,
-                //   width: 450,
-                //   padding: EdgeInsets.only(left: 10, right: 10),
-                //   decoration: BoxDecoration(
-                //       color: const Color.fromARGB(255, 214, 221, 213),
-                //       borderRadius: BorderRadius.circular(25),
-                //       boxShadow: [
-                //         BoxShadow(
-                //             color: Colors.white,
-                //             blurRadius: 5,
-                //             spreadRadius: 2,
-                //             offset: Offset(1.5, 4))
-                //       ]),
-                //   child: Row(
-                //     children: [
-                //       Icon(
-                //         Icons.remove_red_eye,
-                //         size: 30,
-                //       ),
-                //       SizedBox(
-                //         width: 8,
-                //       ),
-                //       Expanded(
-                //           child: TextField(
-                //         decoration: InputDecoration(border: InputBorder.none,hintText: "Conform-password"),
-                //       ))
-                //     ],
-                //   ),
-                // ),
-
                 Container(
                   height: 60,
                   width: 450,
@@ -171,7 +154,9 @@ class _LoginState extends State<Login> {
                               left: 60, right: 60, top: 10, bottom: 10),
                           backgroundColor:
                               const Color.fromARGB(255, 231, 235, 229)),
-                      onPressed: () {},
+                      onPressed: () {
+                        login();
+                      },
                       child: Text(
                         "SIGNIN",
                         style: TextStyle(
@@ -181,11 +166,12 @@ class _LoginState extends State<Login> {
                       )),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 7,
                 ),
                 Container(
                   height: 1,
                   width: 450,
+                  padding: EdgeInsets.only(left: 15, right: 15),
                   child: Divider(),
                 ),
                 SizedBox(

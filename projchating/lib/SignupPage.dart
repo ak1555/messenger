@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -8,7 +10,23 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  TextEditingController _cpassword = TextEditingController();
   bool Check1 = false;
+
+  void signup()async{
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text.trim(), password: _password.text.trim());
+  }
+
+  void googlesignin()async{
+    final firebaseauth=await FirebaseAuth.instance;
+    final user = await GoogleSignIn();
+    final googleuser = await user.signIn();
+    final GoogleSignInAuthentication? auth = await googleuser?.authentication;
+    final cred = GoogleAuthProvider.credential(accessToken: auth?.accessToken,idToken: auth?.idToken);
+    final person = firebaseauth.signInWithCredential(cred);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +36,7 @@ class _SignUpState extends State<SignUp> {
         color: const Color.fromARGB(255, 242, 248, 242),
         child: Center(
           child: Container(
-            height: 500,
+            height: 600,
             width: 550,
             margin: EdgeInsets.only(left: 20, right: 20),
             padding: EdgeInsets.all(20),
@@ -110,7 +128,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Expanded(
                           child: TextField(
-                        obscureText: Check1,
+                        
                         decoration: InputDecoration(
                             border: InputBorder.none, hintText: "Password"),
                       ))
@@ -126,7 +144,8 @@ class _SignUpState extends State<SignUp> {
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 214, 221, 213),
+                      // color: const Color.fromARGB(255, 214, 221, 213),
+                       color: const Color.fromARGB(255, 231, 235, 229),
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
                         BoxShadow(
@@ -146,12 +165,16 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Expanded(
                           child: TextField(
+                            obscureText: Check1,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Conform-password"),
                       ))
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 Container(
                   height: 20,
@@ -173,6 +196,9 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 15,
+                ),
                 Container(
                   height: 60,
                   width: 450,
@@ -183,7 +209,13 @@ class _SignUpState extends State<SignUp> {
                               left: 60, right: 60, top: 10, bottom: 10),
                           backgroundColor:
                               const Color.fromARGB(255, 231, 235, 229)),
-                      onPressed: () {},
+                      onPressed: () {
+                        if(_password==_cpassword){
+                          signup();
+                        }else{
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("INCORRECT PASSWORDS")));
+                        }
+                      },
                       child: Text(
                         "SIGNUP",
                         style: TextStyle(
@@ -199,9 +231,24 @@ class _SignUpState extends State<SignUp> {
                   height: 25,
                   width: 450,
                   alignment: Alignment.center,
-                  child: Text(
-                    "OR",
-                    style: TextStyle(fontSize: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 1,
+                        width: 140,
+                        child: Divider(),
+                      ),
+                      Text(
+                        "  OR  ",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Container(
+                        height: 1,
+                        width: 140,
+                        child: Divider(),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(
@@ -216,18 +263,21 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     Container(
                       height: 45,
-                      width: 150,
+                      width: 165,
                       padding: EdgeInsets.only(left: 5, right: 5),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          border: Border.all()),
+                          border: Border.all(color: Colors.grey)),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                            height: 40,
-                            width: 50,
-                            child: Image.asset("./images/google.png"),
+                          GestureDetector(
+                            onTap: googlesignin,
+                            child: Container(
+                              height: 30,
+                              width: 40,
+                              child: Image.asset("./images/google.png"),
+                            ),
                           ),
                           Text(
                             "SIGNIN",
