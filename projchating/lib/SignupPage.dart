@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
+  bool Check1 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class _LoginState extends State<Login> {
                     width: double.infinity,
                     alignment: Alignment.center,
                     child: Text(
-                      "LOGIN",
+                      "SIGNUP",
                       style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -109,8 +110,45 @@ class _LoginState extends State<Login> {
                       ),
                       Expanded(
                           child: TextField(
+                        obscureText: Check1,
                         decoration: InputDecoration(
                             border: InputBorder.none, hintText: "Password"),
+                      ))
+                    ],
+                  ),
+                ),
+
+                SizedBox(
+                  height: 35,
+                ),
+                Container(
+                  height: 60,
+                  width: 450,
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 214, 221, 213),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.white,
+                            blurRadius: 5,
+                            spreadRadius: 2,
+                            offset: Offset(1.5, 4))
+                      ]),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.remove_red_eye,
+                        size: 30,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                          child: TextField(
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Conform-password"),
                       ))
                     ],
                   ),
@@ -123,44 +161,18 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Forgot password")
+                      Checkbox(
+                        value: Check1,
+                        onChanged: (value) {
+                          setState(() {
+                            Check1 = !Check1;
+                          });
+                        },
+                      ),
+                      Text("Show password")
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 50,
-                ),
-                //   Container(
-                //   height: 60,
-                //   width: 450,
-                //   padding: EdgeInsets.only(left: 10, right: 10),
-                //   decoration: BoxDecoration(
-                //       color: const Color.fromARGB(255, 214, 221, 213),
-                //       borderRadius: BorderRadius.circular(25),
-                //       boxShadow: [
-                //         BoxShadow(
-                //             color: Colors.white,
-                //             blurRadius: 5,
-                //             spreadRadius: 2,
-                //             offset: Offset(1.5, 4))
-                //       ]),
-                //   child: Row(
-                //     children: [
-                //       Icon(
-                //         Icons.remove_red_eye,
-                //         size: 30,
-                //       ),
-                //       SizedBox(
-                //         width: 8,
-                //       ),
-                //       Expanded(
-                //           child: TextField(
-                //         decoration: InputDecoration(border: InputBorder.none,hintText: "Conform-password"),
-                //       ))
-                //     ],
-                //   ),
-                // ),
-
                 Container(
                   height: 60,
                   width: 450,
@@ -173,7 +185,7 @@ class _LoginState extends State<Login> {
                               const Color.fromARGB(255, 231, 235, 229)),
                       onPressed: () {},
                       child: Text(
-                        "SIGNIN",
+                        "SIGNUP",
                         style: TextStyle(
                             fontSize: 17,
                             letterSpacing: 1.1,
@@ -184,9 +196,13 @@ class _LoginState extends State<Login> {
                   height: 5,
                 ),
                 Container(
-                  height: 1,
+                  height: 25,
                   width: 450,
-                  child: Divider(),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "OR",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 SizedBox(
                   height: 22,
@@ -194,27 +210,33 @@ class _LoginState extends State<Login> {
                 //   ElevatedButton(onPressed: () {
 
                 // }, child: Text("signin"))
+
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "         CREATE AN ACCOUNT         ",
-                      style: TextStyle(fontSize: 11),
-                    ),
                     Container(
-                      height: 35,
-                      width: 100,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 231, 235, 229),
-                              shape: BeveledRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              foregroundColor: Colors.black),
-                          onPressed: () {
-                            Navigator.pushNamed(context, "signup");
-                          },
-                          child: Text("SIGNUP")),
-                    )
+                      height: 45,
+                      width: 150,
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all()),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 40,
+                            width: 50,
+                            child: Image.asset("./images/google.png"),
+                          ),
+                          Text(
+                            "SIGNIN",
+                            style: TextStyle(
+                                letterSpacing: 1, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 )
               ],
