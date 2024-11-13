@@ -129,16 +129,21 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-                Container(
-                  height: 20,
-                  width: 450,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Forgot password")
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "forgot");
+                  },
+                  child: Container(
+                    height: 20,
+                    width: 450,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text("Forgot password")
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

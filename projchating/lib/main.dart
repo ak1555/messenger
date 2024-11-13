@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projchating/Forgot.dart';
 import 'package:projchating/LoginPage.dart';
 import 'package:projchating/MainPage.dart';
 import 'package:projchating/SignupPage.dart';
@@ -16,6 +17,7 @@ await Firebase.initializeApp(
     routes: {
       "login": (context) => Login(),
       "signup": (context) => SignUp(),
+      "forgot":(context)=> ForgotPage(),
     },
   ));
 }
