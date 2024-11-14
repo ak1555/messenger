@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,7 +14,8 @@ class _SignUpState extends State<SignUp> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _cpassword = TextEditingController();
-  bool Check1 = false;
+    final CollectionReference Usr = FirebaseFirestore.instance.collection("user");
+  bool Check1 = true;
 
   void signup()async{
     await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text.trim(), password: _password.text.trim());
@@ -26,7 +28,20 @@ class _SignUpState extends State<SignUp> {
     final GoogleSignInAuthentication? auth = await googleuser?.authentication;
     final cred = GoogleAuthProvider.credential(accessToken: auth?.accessToken,idToken: auth?.idToken);
     final person = firebaseauth.signInWithCredential(cred);
+    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    print(googleuser!.id);
+    print(googleuser!.displayName);
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    var uname=googleuser!.id;
+     var uid=googleuser!.displayName;
+    final userid = {
+      "userid": uid,
+      "username": uname
+    };
+    Usr.add(userid);
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,21 +51,21 @@ class _SignUpState extends State<SignUp> {
         color: const Color.fromARGB(255, 242, 248, 242),
         child: Center(
           child: Container(
-            height: 600,
+            height: 650,
             width: 550,
-            margin: EdgeInsets.only(left: 20, right: 20),
-            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(left: 15, right: 15),
+            // padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-                border: Border.all(
-                    // color: const Color.fromARGB(255, 3, 39, 1)
-                    color: Colors.grey.shade700),
+                // border: Border.all(
+                //     // color: const Color.fromARGB(255, 3, 39, 1)
+                //     color: Colors.grey.shade700),
                 borderRadius: BorderRadius.circular(15)),
             child: ListView(
               children: [
                 Container(
-                    height: 25,
+                    height: 28,
                     width: double.infinity,
-                    alignment: Alignment.center,
+                    alignment: Alignment.bottomCenter,
                     child: Text(
                       "SIGNUP",
                       style: TextStyle(
@@ -59,41 +74,45 @@ class _SignUpState extends State<SignUp> {
                           letterSpacing: 1.4,
                           shadows: [
                             Shadow(
-                                color: Colors.white,
+                                color: Colors.grey,
                                 blurRadius: 3,
-                                offset: Offset(3, 5))
+                                offset: Offset(1.5, 1.5))
                           ]),
                     )),
                 SizedBox(
-                  height: 45,
+                  height: 42,
                 ),
                 Container(
                   height: 65,
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
+                  // margin: EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 231, 235, 229),
-                      borderRadius: BorderRadius.circular(25),
+                      // color: const Color.fromARGB(255, 231, 235, 229),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
+                            color: Colors.grey,
                             blurRadius: 5,
-                            spreadRadius: 2,
+                            // spreadRadius: 2,
                             offset: Offset(1.5, 4))
                       ]),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.email,
-                        size: 30,
-                      ),
+                      // Icon(
+                      //   Icons.email,
+                      //   size: 30,
+                      // ),
                       SizedBox(
                         width: 8,
                       ),
                       Expanded(
                           child: TextField(
                         decoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Email"),
+                            border: InputBorder.none, 
+                            hintText: "Email",hintStyle: TextStyle(color: Colors.blue)
+                            ),
                       ))
                     ],
                   ),
@@ -106,32 +125,47 @@ class _SignUpState extends State<SignUp> {
                   height: 65,
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
-                  decoration: BoxDecoration(
-                      // color: const Color.fromARGB(255, 214, 221, 213),
-                      color: const Color.fromARGB(255, 231, 235, 229),
-                      borderRadius: BorderRadius.circular(25),
+                  // decoration: BoxDecoration(
+                  //     // color: const Color.fromARGB(255, 214, 221, 213),
+                  //     color: const Color.fromARGB(255, 231, 235, 229),
+                  //     borderRadius: BorderRadius.circular(25),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //           color: Colors.white,
+                  //           blurRadius: 5,
+                  //           spreadRadius: 2,
+                  //           offset: Offset(1.5, 4))
+                  //     ]),
+                   decoration: BoxDecoration(
+                      // color: const Color.fromARGB(255, 231, 235, 229),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
+                            color: Colors.grey,
                             blurRadius: 5,
-                            spreadRadius: 2,
+                            // spreadRadius: 2,
                             offset: Offset(1.5, 4))
                       ]),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.remove_red_eye,
-                        size: 30,
-                      ),
+                     
                       SizedBox(
                         width: 8,
                       ),
                       Expanded(
                           child: TextField(
-                        
+                        obscureText: true,
                         decoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Password"),
-                      ))
+                            border: InputBorder.none, hintText: "Password",hintStyle: TextStyle(color: Colors.blue)),
+                      )),
+                       Icon(
+                        Icons.remove_red_eye,
+                        size: 25,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
                     ],
                   ),
                 ),
@@ -143,23 +177,21 @@ class _SignUpState extends State<SignUp> {
                   height: 60,
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
-                  decoration: BoxDecoration(
-                      // color: const Color.fromARGB(255, 214, 221, 213),
-                       color: const Color.fromARGB(255, 231, 235, 229),
-                      borderRadius: BorderRadius.circular(25),
+            
+                   decoration: BoxDecoration(
+                      // color: const Color.fromARGB(255, 231, 235, 229),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
+                            color: Colors.grey,
                             blurRadius: 5,
-                            spreadRadius: 2,
+                            // spreadRadius: 2,
                             offset: Offset(1.5, 4))
                       ]),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.remove_red_eye,
-                        size: 30,
-                      ),
+                     
                       SizedBox(
                         width: 8,
                       ),
@@ -168,8 +200,15 @@ class _SignUpState extends State<SignUp> {
                             obscureText: Check1,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Conform-password"),
-                      ))
+                            hintText: "Conform-password",hintStyle: TextStyle(color: Colors.blue)),
+                      )),
+                       Icon(
+                        Icons.remove_red_eye,
+                        size: 25,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
                     ],
                   ),
                 ),
@@ -188,7 +227,7 @@ class _SignUpState extends State<SignUp> {
                         value: Check1,
                         onChanged: (value) {
                           setState(() {
-                            Check1 = !Check1;
+                            Check1 =! Check1;
                           });
                         },
                       ),
@@ -197,18 +236,23 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 45,
                 ),
                 Container(
                   height: 60,
                   width: 450,
-                  alignment: Alignment.center,
+                  // alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 10,right: 10),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           padding: EdgeInsets.only(
-                              left: 60, right: 60, top: 10, bottom: 10),
+                              left: 60, right: 60, top: 5, bottom: 5),
+                              
                           backgroundColor:
-                              const Color.fromARGB(255, 231, 235, 229)),
+                              // const Color.fromARGB(255, 231, 235, 229)
+                                const Color.fromARGB(255, 134, 175, 211)
+                              ),
                       onPressed: () {
                         if(_password==_cpassword){
                           signup();
@@ -225,7 +269,7 @@ class _SignUpState extends State<SignUp> {
                       )),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 35,
                 ),
                 Container(
                   height: 25,
@@ -236,7 +280,7 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Container(
                         height: 1,
-                        width: 140,
+                        width: 130,
                         child: Divider(),
                       ),
                       Text(
@@ -245,49 +289,45 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         height: 1,
-                        width: 140,
+                        width: 130,
                         child: Divider(),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 22,
+                  height: 40,
                 ),
                 //   ElevatedButton(onPressed: () {
 
                 // }, child: Text("signin"))
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 45,
-                      width: 165,
-                      padding: EdgeInsets.only(left: 5, right: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            onTap: googlesignin,
-                            child: Container(
-                              height: 30,
-                              width: 40,
-                              child: Image.asset("./images/google.png"),
-                            ),
-                          ),
-                          Text(
-                            "SIGNIN",
-                            style: TextStyle(
-                                letterSpacing: 1, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
+                GestureDetector(
+                    onTap: googlesignin,
+                  child: Container(
+                    height: 45,
+                    width: double.infinity,
+                    padding: EdgeInsets.only(left: 5, right: 5),
+                    margin:  EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 30,
+                          width: 40,
+                          child: Image.asset("./images/google.png"),
+                        ),
+                        Text(
+                          "SIGNIN WITH GOOGLE",
+                          style: TextStyle(
+                              letterSpacing: 1, fontWeight: FontWeight.bold),
+                        )
+                      ],
                     ),
-                  ],
+                  ),
                 )
               ],
             ),

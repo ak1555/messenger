@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,13 +12,22 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+  final CollectionReference Usr = FirebaseFirestore.instance.collection("user");
   void login() async {
     UserCredential user = await FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: _email.text.trim(), password: _password.text.trim());
     print("=========================================================");
     print(user.user!.uid);
+    print(user.user!.displayName);
     print("=========================================================");
+    var uname=user.user!.uid;
+     var uid=user.user!.displayName;
+    final userid = {
+      "userid": uid,
+      "username": uname
+    };
+    Usr.add(userid);
   }
 
   @override
@@ -26,18 +36,22 @@ class _LoginState extends State<Login> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        color: const Color.fromARGB(255, 242, 248, 242),
+        color: const Color.fromARGB(255, 248, 255, 248),
+        // color: const Color.fromARGB(255, 226, 245, 252),
+        // color: const Color.fromARGB(255, 212, 255, 251),
+        // color: const Color.fromARGB(255, 190, 152, 255),
         child: Center(
           child: Container(
-            height: 509,
+            height: 515,
             width: 550,
             margin: EdgeInsets.only(left: 20, right: 20),
-            padding: EdgeInsets.all(20),
+            // padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                border: Border.all(
-                    // color: const Color.fromARGB(255, 3, 39, 1)
-                    color: Colors.grey.shade700),
-                borderRadius: BorderRadius.circular(15)),
+                // border: Border.all(
+                //     // color: const Color.fromARGB(255, 3, 39, 1)
+                //     color: Colors.grey.shade700),
+                // borderRadius: BorderRadius.circular(15)
+                ),
             child: ListView(
               children: [
                 Container(
@@ -52,9 +66,9 @@ class _LoginState extends State<Login> {
                           letterSpacing: 1.4,
                           shadows: [
                             Shadow(
-                                color: Colors.white,
+                                color: Colors.grey,
                                 blurRadius: 3,
-                                offset: Offset(3, 5))
+                                offset: Offset(1, 1))
                           ]),
                     )),
                 SizedBox(
@@ -65,21 +79,22 @@ class _LoginState extends State<Login> {
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 231, 235, 229),
-                      borderRadius: BorderRadius.circular(25),
+                      // color: const Color.fromARGB(255, 231, 235, 229),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
-                            blurRadius: 5,
-                            spreadRadius: 2,
-                            offset: Offset(1.5, 4))
+                            color: Colors.grey.shade400,
+                            blurRadius: 3,
+                            // spreadRadius: 5,
+                            offset: Offset(3, 3))
                       ]),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.email,
-                        size: 30,
-                      ),
+                      // Icon(
+                      //   Icons.email,
+                      //   size: 30,
+                      // ),
                       SizedBox(
                         width: 8,
                       ),
@@ -87,7 +102,9 @@ class _LoginState extends State<Login> {
                           child: TextField(
                         controller: _email,
                         decoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Email"),
+                            border: InputBorder.none,
+                            hintText: "Email",
+                            hintStyle: TextStyle(color: Colors.blue)),
                       ))
                     ],
                   ),
@@ -100,23 +117,30 @@ class _LoginState extends State<Login> {
                   height: 65,
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
+                  // decoration: BoxDecoration(
+                  //     // color: const Color.fromARGB(255, 214, 221, 213),
+                  //     color: const Color.fromARGB(255, 231, 235, 229),
+                  //     borderRadius: BorderRadius.circular(25),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //           color: Colors.white,
+                  //           blurRadius: 5,
+                  //           spreadRadius: 2,
+                  //           offset: Offset(1.5, 4))
+                  //     ]),
                   decoration: BoxDecoration(
-                      // color: const Color.fromARGB(255, 214, 221, 213),
-                      color: const Color.fromARGB(255, 231, 235, 229),
-                      borderRadius: BorderRadius.circular(25),
+                      // color: const Color.fromARGB(255, 231, 235, 229),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
-                            blurRadius: 5,
-                            spreadRadius: 2,
-                            offset: Offset(1.5, 4))
+                            color: Colors.grey.shade400,
+                            blurRadius: 3,
+                            // spreadRadius: 5,
+                            offset: Offset(3, 3))
                       ]),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.remove_red_eye,
-                        size: 30,
-                      ),
                       SizedBox(
                         width: 8,
                       ),
@@ -124,10 +148,19 @@ class _LoginState extends State<Login> {
                           child: TextField(
                         controller: _password,
                         decoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Password"),
-                      ))
+                            border: InputBorder.none,
+                            hintText: "Password",
+                            hintStyle: TextStyle(color: Colors.blue)),
+                      )),
+                      Icon(
+                        Icons.remove_red_eye,
+                        size: 25,
+                      ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -137,11 +170,17 @@ class _LoginState extends State<Login> {
                     height: 20,
                     width: 450,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         SizedBox(
                           width: 10,
                         ),
-                        Text("Forgot password")
+                        Text(
+                          "Forgot password  ",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue.shade900),
+                        )
                       ],
                     ),
                   ),
@@ -150,15 +189,18 @@ class _LoginState extends State<Login> {
                   height: 50,
                 ),
                 Container(
-                  height: 60,
+                  height: 55,
                   width: 450,
-                  alignment: Alignment.center,
+                  // alignment: Alignment.center,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                          shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
                           padding: EdgeInsets.only(
                               left: 60, right: 60, top: 10, bottom: 10),
                           backgroundColor:
-                              const Color.fromARGB(255, 231, 235, 229)),
+                              // const Color.fromARGB(255, 231, 235, 229)
+                              const Color.fromARGB(255, 134, 175, 211)),
                       onPressed: () {
                         login();
                       },
@@ -167,11 +209,11 @@ class _LoginState extends State<Login> {
                         style: TextStyle(
                             fontSize: 17,
                             letterSpacing: 1.1,
-                            color: Colors.black),
+                            color: Colors.white),
                       )),
                 ),
                 SizedBox(
-                  height: 7,
+                  height: 35,
                 ),
                 Container(
                   height: 1,
@@ -180,7 +222,7 @@ class _LoginState extends State<Login> {
                   child: Divider(),
                 ),
                 SizedBox(
-                  height: 22,
+                  height: 35,
                 ),
                 //   ElevatedButton(onPressed: () {
 
@@ -188,24 +230,38 @@ class _LoginState extends State<Login> {
                 Row(
                   children: [
                     Text(
-                      "         CREATE AN ACCOUNT         ",
+                      "         DON'T HAVE AN ACCOUNT?   ",
                       style: TextStyle(fontSize: 11),
                     ),
-                    Container(
-                      height: 35,
-                      width: 100,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 231, 235, 229),
-                              shape: BeveledRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              foregroundColor: Colors.black),
-                          onPressed: () {
-                            Navigator.pushNamed(context, "signup");
-                          },
-                          child: Text("SIGNUP")),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "signup");
+                      },
+                      child: Text(
+                        "SIGNUP",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            letterSpacing: 1,
+                            color: Colors.blue),
+                      ),
                     )
+                    // Container(
+                    //   height: 35,
+                    //   width: 109,
+                    //   child: ElevatedButton(
+                    //       style: ElevatedButton.styleFrom(
+                    //           backgroundColor:
+                    //               // const Color.fromARGB(255, 231, 235, 229),
+                    //               //  const Color.fromARGB(255, 128, 216, 248),
+                    //               Colors.blue.shade200,
+                    //           shape: BeveledRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(5)),
+                    //           foregroundColor: Colors.black),
+                    //       onPressed: () {
+                    //         Navigator.pushNamed(context, "signup");
+                    //       },
+                    //       child: Text("SIGNUP",style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: 1,color: Colors.black),)),
+                    // )
                   ],
                 )
               ],
