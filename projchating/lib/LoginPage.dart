@@ -21,13 +21,22 @@ class _LoginState extends State<Login> {
     print(user.user!.uid);
     print(user.user!.displayName);
     print("=========================================================");
-    var uname=user.user!.uid;
-     var uid=user.user!.displayName;
-    final userid = {
-      "userid": uid,
-      "username": uname
-    };
-    Usr.add(userid);
+    var uname = user.user!.uid;
+    var uid = user.user!.displayName;
+    // final userid = {
+    //   "userid": uid,
+    //   "username": uname
+    // };
+    // Usr.add(userid);
+    adduse(uid, uname);
+  }
+
+  void adduse(userid, username) async {
+    QuerySnapshot querySnapshot =
+        await Usr.where("userid", isEqualTo: userid).get();
+    if (querySnapshot.docs.isEmpty) {
+      Usr.add({"userid": userid, "username": username});
+    }
   }
 
   @override
@@ -178,7 +187,7 @@ class _LoginState extends State<Login> {
                         Text(
                           "Forgot password  ",
                           style: TextStyle(
-                              decoration: TextDecoration.underline,
+                              // decoration: TextDecoration.underline,
                               color: Colors.blue.shade900),
                         )
                       ],

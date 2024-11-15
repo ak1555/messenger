@@ -14,33 +14,42 @@ class _SignUpState extends State<SignUp> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _cpassword = TextEditingController();
-    final CollectionReference Usr = FirebaseFirestore.instance.collection("user");
+  final CollectionReference Usr = FirebaseFirestore.instance.collection("user");
   bool Check1 = true;
 
-  void signup()async{
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text.trim(), password: _password.text.trim());
+  void signup() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _email.text.trim(), password: _password.text.trim());
   }
 
-  void googlesignin()async{
-    final firebaseauth=await FirebaseAuth.instance;
-    final user = await GoogleSignIn();
-    final googleuser = await user.signIn();
+  void adduse(userid, username) async {
+    QuerySnapshot querySnapshot =
+        await Usr.where("userid", isEqualTo: userid).get();
+    if (querySnapshot.docs.isEmpty) {
+      Usr.add({"userid": userid, "username": username});
+    }
+  }
+
+  void googlesignin() async {
+    final firebaseauth = await FirebaseAuth.instance;
+    final googleservice = await GoogleSignIn();
+    final googleuser = await googleservice.signIn();
     final GoogleSignInAuthentication? auth = await googleuser?.authentication;
-    final cred = GoogleAuthProvider.credential(accessToken: auth?.accessToken,idToken: auth?.idToken);
+    final cred = GoogleAuthProvider.credential(
+        accessToken: auth?.accessToken, idToken: auth?.idToken);
     final person = firebaseauth.signInWithCredential(cred);
-    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    print(
+        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     print(googleuser!.id);
     print(googleuser!.displayName);
-    print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    var uname=googleuser!.id;
-     var uid=googleuser!.displayName;
-    final userid = {
-      "userid": uid,
-      "username": uname
-    };
-    Usr.add(userid);
+    print(
+        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    var uid = googleuser!.id;
+    var uname = googleuser!.displayName;
+    // final userid = {"userid": uid, "username": uname};
+    // Usr.add(userid);
+    adduse(uid, uname);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +119,9 @@ class _SignUpState extends State<SignUp> {
                       Expanded(
                           child: TextField(
                         decoration: InputDecoration(
-                            border: InputBorder.none, 
-                            hintText: "Email",hintStyle: TextStyle(color: Colors.blue)
-                            ),
+                            border: InputBorder.none,
+                            hintText: "Email",
+                            hintStyle: TextStyle(color: Colors.blue)),
                       ))
                     ],
                   ),
@@ -136,7 +145,7 @@ class _SignUpState extends State<SignUp> {
                   //           spreadRadius: 2,
                   //           offset: Offset(1.5, 4))
                   //     ]),
-                   decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                       // color: const Color.fromARGB(255, 231, 235, 229),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -149,7 +158,6 @@ class _SignUpState extends State<SignUp> {
                       ]),
                   child: Row(
                     children: [
-                     
                       SizedBox(
                         width: 8,
                       ),
@@ -157,9 +165,11 @@ class _SignUpState extends State<SignUp> {
                           child: TextField(
                         obscureText: true,
                         decoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Password",hintStyle: TextStyle(color: Colors.blue)),
+                            border: InputBorder.none,
+                            hintText: "Password",
+                            hintStyle: TextStyle(color: Colors.blue)),
                       )),
-                       Icon(
+                      Icon(
                         Icons.remove_red_eye,
                         size: 25,
                       ),
@@ -177,8 +187,7 @@ class _SignUpState extends State<SignUp> {
                   height: 60,
                   width: 450,
                   padding: EdgeInsets.only(left: 10, right: 10),
-            
-                   decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                       // color: const Color.fromARGB(255, 231, 235, 229),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -191,18 +200,18 @@ class _SignUpState extends State<SignUp> {
                       ]),
                   child: Row(
                     children: [
-                     
                       SizedBox(
                         width: 8,
                       ),
                       Expanded(
                           child: TextField(
-                            obscureText: Check1,
+                        obscureText: Check1,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Conform-password",hintStyle: TextStyle(color: Colors.blue)),
+                            hintText: "Conform-password",
+                            hintStyle: TextStyle(color: Colors.blue)),
                       )),
-                       Icon(
+                      Icon(
                         Icons.remove_red_eye,
                         size: 25,
                       ),
@@ -227,7 +236,7 @@ class _SignUpState extends State<SignUp> {
                         value: Check1,
                         onChanged: (value) {
                           setState(() {
-                            Check1 =! Check1;
+                            Check1 = !Check1;
                           });
                         },
                       ),
@@ -242,22 +251,22 @@ class _SignUpState extends State<SignUp> {
                   height: 60,
                   width: 450,
                   // alignment: Alignment.center,
-                  margin: EdgeInsets.only(left: 10,right: 10),
+                  margin: EdgeInsets.only(left: 10, right: 10),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
                           padding: EdgeInsets.only(
                               left: 60, right: 60, top: 5, bottom: 5),
-                              
                           backgroundColor:
                               // const Color.fromARGB(255, 231, 235, 229)
-                                const Color.fromARGB(255, 134, 175, 211)
-                              ),
+                              const Color.fromARGB(255, 134, 175, 211)),
                       onPressed: () {
-                        if(_password==_cpassword){
+                        if (_password == _cpassword) {
                           signup();
-                        }else{
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("INCORRECT PASSWORDS")));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("INCORRECT PASSWORDS")));
                         }
                       },
                       child: Text(
@@ -303,12 +312,12 @@ class _SignUpState extends State<SignUp> {
                 // }, child: Text("signin"))
 
                 GestureDetector(
-                    onTap: googlesignin,
+                  onTap: googlesignin,
                   child: Container(
                     height: 45,
                     width: double.infinity,
                     padding: EdgeInsets.only(left: 5, right: 5),
-                    margin:  EdgeInsets.only(left: 10, right: 10),
+                    margin: EdgeInsets.only(left: 10, right: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.grey)),

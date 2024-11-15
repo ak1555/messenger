@@ -25,20 +25,20 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: () async {
                   // await FirebaseAuth.instance.signOut();
-                  final googlesignin =GoogleSignIn();
-                  try{
-                    if(await googlesignin.isSignedIn()){
+                  final googlesignin = GoogleSignIn();
+                  try {
+                    if (await googlesignin.isSignedIn()) {
                       await googlesignin.signOut();
                       await FirebaseAuth.instance.signOut();
 
-                        if(await googlesignin.isSignedIn()){
-                      await googlesignin.disconnect();
+                      if (await googlesignin.isSignedIn()) {
+                        await googlesignin.disconnect();
+                      }
+                    } else {
+                      print("user not Signed in");
+                      await FirebaseAuth.instance.signOut();
                     }
-                    }
-                  else{
-                    print("user not Signed in");
-                  }
-                  }catch(e){
+                  } catch (e) {
                     print(e);
                   }
                 },
@@ -55,9 +55,11 @@ class _HomePageState extends State<HomePage> {
           //     },
           //     child: Text("LOGOUT")),
           Container(
-            height: 55,
-            width: 55,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(100)),
+            height: 50,
+            width: 50,
+            margin: EdgeInsets.only(right: 15),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(100)),
           )
         ],
       ),
@@ -67,10 +69,11 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Container(
-              height: 250,
+              height: 210,
               width: double.infinity,
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 40, 158, 255),
+                  gradient: LinearGradient(colors: [Colors.blueAccent.shade400,Colors.blue.shade500]),
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(55))),
               child: Column(
@@ -89,6 +92,14 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, "users");
+        },
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
 }
