@@ -15,13 +15,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: Drawer(
-        child: Column(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 50,
-              width: 100,
-              color: Colors.blue,
-            ),
+            // Container(
+            //   height: 50,
+            //   width: 100,
+            //   color: Colors.blue,
+            // ),
             ElevatedButton(
                 onPressed: () async {
                   // await FirebaseAuth.instance.signOut();
@@ -48,6 +48,10 @@ class _HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        // automaticallyImplyLeading: false,
+        // leading: IconButton(onPressed: () {
+        //   Scaffold.of(context).openDrawer();
+        // }, icon: Icon(Icons.menu),tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,),
         actions: [
           // ElevatedButton(
           //     onPressed: () async {
@@ -73,19 +77,37 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 40, 158, 255),
-                  gradient: LinearGradient(colors: [Colors.blueAccent.shade400,Colors.blue.shade500]),
+                  gradient: LinearGradient(colors: [
+                    const Color.fromARGB(255, 86, 49, 250),
+                    const Color.fromARGB(255, 105, 74, 241)
+                  ]),
                   borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(55))),
+                      BorderRadius.vertical(bottom: Radius.circular(50))),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      // Icon(Icons.equalizer_rounded),
-                      // IconButton(onPressed: () {
-
-                      // }, icon: Icon(Icons.add))
-                    ],
-                  )
+                  Container(
+                      height: 210,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(bottom: 45),
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                          height: 60,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(55)
+                          ),
+                          margin: EdgeInsets.only(left: 15,right: 15),
+                          padding: EdgeInsets.only(left: 7,right: 7),
+                          child: Row(
+                            children: [
+                              Icon(Icons.search),
+                              SizedBox(width: 5,),
+                              Expanded(child: TextField(
+                                decoration: InputDecoration(border: InputBorder.none),
+                              )),SizedBox(width: 3,)
+                            ],
+                          )))
                 ],
               ),
             )
@@ -93,10 +115,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+      backgroundColor:    const Color.fromARGB(255, 86, 49, 250),foregroundColor: Colors.white,
         onPressed: () {
           Navigator.pushNamed(context, "users");
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,size: 33,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

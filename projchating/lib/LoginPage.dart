@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projchating/providerr/provide.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,6 +31,11 @@ class _LoginState extends State<Login> {
     // };
     // Usr.add(userid);
     adduse(uid, uname);
+    Provider.of<Pro>(context,listen: false).setUid(user.user!.uid ?? "");
+    print("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+    print(Provider.of<Pro>(context,listen: false).uid);
+    print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+
   }
 
   void adduse(userid, username) async {
@@ -41,7 +48,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<Pro> (builder: (context, value, child) => Scaffold(
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -212,6 +219,7 @@ class _LoginState extends State<Login> {
                               const Color.fromARGB(255, 134, 175, 211)),
                       onPressed: () {
                         login();
+                        // value.add(data)
                       },
                       child: Text(
                         "SIGNIN",
@@ -278,6 +286,6 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

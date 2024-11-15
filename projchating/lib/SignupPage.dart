@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:projchating/providerr/provide.dart';
+import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -44,11 +46,17 @@ class _SignUpState extends State<SignUp> {
     print(googleuser!.displayName);
     print(
         "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-    var uid = googleuser!.id;
+    var Uid = googleuser!.id;
     var uname = googleuser!.displayName;
     // final userid = {"userid": uid, "username": uname};
     // Usr.add(userid);
-    adduse(uid, uname);
+
+    adduse(Uid, uname);
+
+    Provider.of<Pro>(context,listen: false).setUid(Uid ?? "");
+    print("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+    print(Provider.of<Pro>(context,listen: false).uid);
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
   }
 
   @override
@@ -240,7 +248,7 @@ class _SignUpState extends State<SignUp> {
                           });
                         },
                       ),
-                      Text("Show password")
+                      Text("hide password")
                     ],
                   ),
                 ),
@@ -248,7 +256,7 @@ class _SignUpState extends State<SignUp> {
                   height: 45,
                 ),
                 Container(
-                  height: 60,
+                  height: 55,
                   width: 450,
                   // alignment: Alignment.center,
                   margin: EdgeInsets.only(left: 10, right: 10),
@@ -314,10 +322,10 @@ class _SignUpState extends State<SignUp> {
                 GestureDetector(
                   onTap: googlesignin,
                   child: Container(
-                    height: 45,
+                    height: 43,
                     width: double.infinity,
                     padding: EdgeInsets.only(left: 5, right: 5),
-                    margin: EdgeInsets.only(left: 10, right: 10),
+                    margin: EdgeInsets.only(left: 18, right: 18),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.grey)),

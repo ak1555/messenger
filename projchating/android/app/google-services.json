@@ -125,6 +125,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "415293420276-cphtq4qt8bgu0fvp9aec7te88fr52fq8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projchating",
+            "certificate_hash": "658babb438970825cebf4d902aa2c03557e8ee3b"
+          }
+        },
+        {
           "client_id": "415293420276-npsv70tckoln5dkki72biha70pkl361i.apps.googleusercontent.com",
           "client_type": 3
         }
