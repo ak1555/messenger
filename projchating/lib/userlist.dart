@@ -16,7 +16,7 @@ class _UsersState extends State<Users> {
   final mybox = Hive.box('mybox');
 
   void getuser() async {
-    CollectionReference usrs = FirebaseFirestore.instance.collection("user");
+    // CollectionReference usrs = FirebaseFirestore.instance.collection("user");
     QuerySnapshot querySnapShot = await usrs.get();
 
     setState(() {
@@ -68,35 +68,43 @@ class _UsersState extends State<Users> {
                       itemCount: ls.length,
                       itemBuilder: (context, index) {
                         var use = ls[index];
-                        return Container(
-                          height: 79,
-                          decoration: BoxDecoration(
-                              // color:  const Color.fromARGB(255, 86, 49, 250),
-
-                              color: const Color.fromARGB(255, 184, 206, 224),
-                              borderRadius: BorderRadius.circular(10)),
-                          margin:
-                              EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                use["username"] ?? "No name",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                height: 62,
-                                width: 62,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color:
-                                      const Color.fromARGB(255, 229, 234, 238),
+                        return GestureDetector(
+                          onTap: () {
+                            print(use["userid"]);
+                            String uid = use["userid"];
+                            mybox.put(2, uid);
+                            Navigator.pushNamed(context, "chat");
+                          },
+                          child: Container(
+                            height: 79,
+                            decoration: BoxDecoration(
+                                // color:  const Color.fromARGB(255, 86, 49, 250),
+                          
+                                color: const Color.fromARGB(255, 184, 206, 224),
+                                borderRadius: BorderRadius.circular(10)),
+                            margin:
+                                EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  use["username"] ?? "No name",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                              )
-                            ],
+                                Container(
+                                  height: 62,
+                                  width: 62,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color:
+                                        const Color.fromARGB(255, 229, 234, 238),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },

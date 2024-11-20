@@ -6,6 +6,7 @@ import 'package:projchating/LoginPage.dart';
 import 'package:projchating/MainPage.dart';
 import 'package:projchating/SignupPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:projchating/chatpage.dart';
 import 'package:projchating/providerr/provide.dart';
 import 'package:projchating/userlist.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,8 @@ void main() async {
       "login": (context) => Login(),
       "signup": (context) => SignUp(),
       "forgot": (context) => ForgotPage(),
-      "users":(context)=>Users()
+      "users":(context)=>Users(),
+      "chat":(context)=>ChatPage()
     },
   )
   )
