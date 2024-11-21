@@ -32,7 +32,7 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  void googlesignin() async {
+  Future<void> googlesignin() async {
     final firebaseauth = await FirebaseAuth.instance;
     final googleservice = await GoogleSignIn();
     final googleuser = await googleservice.signIn();

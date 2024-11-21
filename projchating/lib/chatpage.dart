@@ -10,36 +10,48 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  TextEditingController _message = TextEditingController();
+
+  final mybox = Hive.box('mybox');
+  String? sender;
+  String? reciever;
+  String? Receiver_name;
+  void get_id() {
+    sender = mybox.get(1);
+    reciever = mybox.get(2);
+    Receiver_name = mybox.get(3);
+  }
+
+  Future<void> add(String sender, String receiver, String message) async {
+    await FirebaseFirestore.instance.collection("messages").add({
+      "sender": sender,
+      "receiver": receiver,
+      "message": message.trim(),
+      "timestamp": FieldValue.serverTimestamp(),
+    });
+    setState(() {
+      _message.clear();
+    });
+  }
+
+  Stream<QuerySnapshot> getMessages(String sender, String receiver) {
+    return FirebaseFirestore.instance
+        .collection("messages")
+        .where("sender", whereIn: [sender, receiver])
+        .where("receiver", whereIn: [sender, receiver])
+        .orderBy("timestamp", descending: false)
+        .snapshots();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    get_id();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _message = TextEditingController();
-
-    final mybox = Hive.box('mybox');
-
-    final sender = mybox.get(1);
-    final reciever = mybox.get(2);
-
-    Future<void> add(String sender, String receiver, String message) async {
-      FirebaseFirestore.instance.collection("messages").add({
-        "sender": sender,
-        "receiver": receiver,
-        "message": message.trim(),
-        "timestamp": FieldValue.serverTimestamp(),
-      });
-      setState(() {
-        _message.clear();
-      });
-    }
-
-    Stream<QuerySnapshot> getMessages(String sender, String receiver) {
-      return FirebaseFirestore.instance
-          .collection("messages")
-          .where("sender", whereIn: [sender, receiver])
-          .where("receiver", whereIn: [sender, receiver])
-          .orderBy("timestamp", descending: false)
-          .snapshots();
-    }
-
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -49,11 +61,29 @@ class _ChatPageState extends State<ChatPage> {
             Container(
                 height: 100,
                 width: double.infinity,
-                color: Colors.brown.shade200,
+                color: Colors.brown.shade100,
                 alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.only(left: 12, right: 12, bottom: 10),
+                padding: EdgeInsets.only(left: 5, right: 12, bottom: 10),
                 child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    MaterialButton(
+                      onPressed: () {
+                        // Navigator.popUntil(context, (route) {
+                        //   return route.settings.name=="home";
+                        // },);
+                        // Navigator.pop(context);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          "home",
+                          (route) {
+                            return false;
+                          },
+                        );
+                      },
+                      child: Icon(Icons.arrow_back),
+                    ),
+                    Expanded(child: Text(Receiver_name.toString())),
                     Container(
                       height: 55,
                       width: 55,
@@ -64,51 +94,65 @@ class _ChatPageState extends State<ChatPage> {
                   ],
                 )),
             Expanded(
-                child: Container(
-              child: StreamBuilder(
-                stream: getMessages(sender, reciever),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Something went wrong"),
-                    );
-                  }
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Text("No Message Yet"),
-                    );
-                  }
-
-                  final message = snapshot.data!.docs;
-                  return ListView.builder(
-                    itemCount: message.length,
-                    itemBuilder: (context, index) {
-                      final messageData =
-                          message[index].data() as Map<String, dynamic>;
-                      print(messageData);
-                      final isMe = messageData["sender"] == sender;
-                      return Align(
-                        alignment:
-                            isMe ? Alignment.centerRight : Alignment.centerLeft,
-                        child: Container(
-                          margin: EdgeInsets.only(left: 5, right: 5),
-                          padding: EdgeInsets.all(3.5),
-                          decoration: BoxDecoration(
-                              color: isMe
-                                  ? Colors.blueAccent
-                                  : Colors.grey.shade300),
-                          child: Text(messageData["message"]),
-                        ),
-                      );
-                    },
+                child: StreamBuilder<QuerySnapshot>(
+              stream: getMessages(sender!, reciever!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
+                }
+                if (snapshot.hasError) {
+                  print(
+                      "++++++++++++++++===============================+++++++++++++++++++++");
+                  print(snapshot.error);
+                  print(
+                      "++++++++++++++++===============================+++++++++++++++++++++");
+                  return Center(
+                    child: Text("Something went wrong"),
+                  );
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Text("No messages Yet"),
+                  );
+                }
+                final message = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: message.length,
+                  itemBuilder: (context, index) {
+                    final messageData =
+                        message[index].data() as Map<String, dynamic>;
+                    print(messageData);
+                    print(
+                        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%================");
+                    print(messageData["message"]);
+                    print(
+                        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=================");
+                    final isMe = messageData["sender"] == sender;
+                    return Align(
+                      alignment:
+                          isMe ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 10, right: 7, top: 5, bottom: 5),
+                        padding: EdgeInsets.only(
+                            left: 10, right: 10, top: 8, bottom: 8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: isMe
+                                ? Colors.blueAccent
+                                : Colors.brown.shade100),
+                        child: Text(
+                          messageData["message"],
+                          style: TextStyle(
+                              color: isMe ? Colors.white : Colors.black),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             )),
             Container(
               height: 1,
@@ -141,7 +185,7 @@ class _ChatPageState extends State<ChatPage> {
                               controller: _message,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Messages...",
+                                hintText: "Type Messages...",
                               ),
                             ),
                           ),
@@ -160,7 +204,16 @@ class _ChatPageState extends State<ChatPage> {
                         borderRadius: BorderRadius.circular(100)),
                     child: IconButton(
                         onPressed: () {
-                          add(sender, reciever, _message.text);
+                          add(sender!, reciever!, _message.text);
+                          List ls = [];
+                          if (mybox.get(4) != null) {
+                            ls = mybox.get(4);
+                            ls.add(Receiver_name.toString());
+                            mybox.put(4, ls);
+                          } else {
+                            ls.add(Receiver_name.toString());
+                            mybox.put(4, ls);
+                          }
                         },
                         icon: Icon(
                           Icons.send,

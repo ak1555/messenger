@@ -70,9 +70,12 @@ class _UsersState extends State<Users> {
                         var use = ls[index];
                         return GestureDetector(
                           onTap: () {
+                            print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                             print(use["userid"]);
                             String uid = use["userid"];
+                            String unme = use["username"];
                             mybox.put(2, uid);
+                            mybox.put(3, unme);
                             Navigator.pushNamed(context, "chat");
                           },
                           child: Container(

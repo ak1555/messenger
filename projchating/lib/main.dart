@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:projchating/Forgot.dart';
+import 'package:projchating/Homepage.dart';
 import 'package:projchating/LoginPage.dart';
 import 'package:projchating/MainPage.dart';
 import 'package:projchating/SignupPage.dart';
@@ -28,7 +29,8 @@ void main() async {
       "signup": (context) => SignUp(),
       "forgot": (context) => ForgotPage(),
       "users":(context)=>Users(),
-      "chat":(context)=>ChatPage()
+      "chat":(context)=>ChatPage(),
+      "home":(context)=>HomePage()
     },
   )
   )
