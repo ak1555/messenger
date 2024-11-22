@@ -86,10 +86,10 @@ class _UsersState extends State<Users> {
                                 color: const Color.fromARGB(255, 184, 206, 224),
                                 borderRadius: BorderRadius.circular(10)),
                             margin:
-                                EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                                EdgeInsets.only(left: 11, right: 11, bottom: 15),
                             width: double.infinity,
                             alignment: Alignment.center,
-                            padding: EdgeInsets.only(left: 10, right: 10),
+                            padding: EdgeInsets.only(left: 15, right: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

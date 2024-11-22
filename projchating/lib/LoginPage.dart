@@ -58,7 +58,7 @@ class _LoginState extends State<Login> {
         // color: const Color.fromARGB(255, 190, 152, 255),
         child: Center(
           child: Container(
-            height: 515,
+            height: 585,
             width: 550,
             margin: EdgeInsets.only(left: 20, right: 20),
             // padding: EdgeInsets.all(10),
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 80,
                 ),
                 Container(
                   height: 55,

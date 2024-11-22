@@ -52,6 +52,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -59,15 +60,19 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(
           children: [
             Container(
-                height: 100,
+                height: 105,
                 width: double.infinity,
-                color: Colors.brown.shade100,
+                // color: Colors.brown.shade100,
+                decoration: BoxDecoration(
+                  color:   const Color.fromARGB(255, 79, 91, 128),
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))
+                ),
                 alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.only(left: 5, right: 12, bottom: 10),
+                padding: EdgeInsets.only(left: 5, right: 12, bottom: 13),
                 child: Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MaterialButton(
+                    IconButton(
                       onPressed: () {
                         // Navigator.popUntil(context, (route) {
                         //   return route.settings.name=="home";
@@ -81,9 +86,11 @@ class _ChatPageState extends State<ChatPage> {
                           },
                         );
                       },
-                      child: Icon(Icons.arrow_back),
+                      icon: Icon(Icons.arrow_back,color: Colors.white,),
                     ),
-                    Expanded(child: Text(Receiver_name.toString())),
+                    SizedBox(width: 2,),
+                    Expanded(child: Text(Receiver_name.toString(),style: TextStyle(color: Colors.grey.shade50,fontWeight: FontWeight.w500,fontSize: 18),)),
+                    SizedBox(width: 1,),
                     Container(
                       height: 55,
                       width: 55,
@@ -135,18 +142,21 @@ class _ChatPageState extends State<ChatPage> {
                           isMe ? Alignment.centerRight : Alignment.centerLeft,
                       child: Container(
                         margin: EdgeInsets.only(
-                            left: 10, right: 7, top: 5, bottom: 5),
+                            left: 11, right: 9, top: 5, bottom: 5),
                         padding: EdgeInsets.only(
-                            left: 10, right: 10, top: 8, bottom: 8),
+                            left: 11.5, right: 11.5, top: 8.5, bottom: 8.5),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+
+                          boxShadow: [BoxShadow(blurRadius: 3,offset: Offset(1, 2),color: isMe?Colors.grey.shade700:Colors.grey.shade700)],
+                            borderRadius: BorderRadius.circular(15),
                             color: isMe
-                                ? Colors.blueAccent
-                                : Colors.brown.shade100),
+                                ? 
+                                     const Color.fromARGB(255, 159, 167, 190)
+                                : Colors.brown.shade50),
                         child: Text(
                           messageData["message"],
-                          style: TextStyle(
-                              color: isMe ? Colors.white : Colors.black),
+                          style: TextStyle(fontSize: 16.5,
+                              color: isMe ?   const Color.fromARGB(255, 54, 62, 88) : Colors.black),
                         ),
                       ),
                     );
@@ -160,10 +170,10 @@ class _ChatPageState extends State<ChatPage> {
               child: Divider(),
             ),
             Container(
-              height: 90,
+              height: 80,
               width: double.infinity,
               margin: EdgeInsets.all(1.5),
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 10, right: 10,bottom: 3),
               decoration: BoxDecoration(
                   // border: Border.all(),
                   ),
@@ -173,13 +183,16 @@ class _ChatPageState extends State<ChatPage> {
                     child: Container(
                       height: 60,
                       alignment: Alignment.center,
-                      padding: EdgeInsets.only(left: 10, right: 10),
+                      padding: EdgeInsets.only(left: 10, right: 10,),
                       decoration: BoxDecoration(
-                          color: Colors.brown.shade50,
+                          // color: Colors.brown.shade50,
+                          // color:  const Color.fromARGB(255, 159, 167, 190),
+                          // color:  const Color.fromARGB(255, 193, 200, 221),
+                           color:  const Color.fromARGB(255, 216, 222, 241),
                           borderRadius: BorderRadius.circular(100)),
                       child: Row(
                         children: [
-                          IconButton(onPressed: () {}, icon: Icon(Icons.mic)),
+                          IconButton(onPressed: () {}, icon: Icon(Icons.mic,color:  const Color.fromARGB(255, 54, 62, 88),)),
                           Expanded(
                             child: TextField(
                               controller: _message,
@@ -200,7 +213,9 @@ class _ChatPageState extends State<ChatPage> {
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                        color: Colors.brown.shade50,
+                        // color: Colors.brown.shade50,
+                        //  color:  const Color.fromARGB(255, 193, 200, 221),
+                         color:  const Color.fromARGB(255, 216, 222, 241),
                         borderRadius: BorderRadius.circular(100)),
                     child: IconButton(
                         onPressed: () {
@@ -217,7 +232,7 @@ class _ChatPageState extends State<ChatPage> {
                         },
                         icon: Icon(
                           Icons.send,
-                          size: 33,
+                          size: 33,color:  const Color.fromARGB(255, 54, 62, 88),
                         )),
                   )
                 ],
