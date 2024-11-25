@@ -131,6 +131,7 @@ print(person);
             margin: EdgeInsets.only(right: 15),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(100)),
+                child: Icon(Icons.person,size: 33,),
           )
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:projchating/MainPage.dart';
 import 'package:projchating/providerr/provide.dart';
 import 'package:provider/provider.dart';
 
@@ -53,10 +54,12 @@ class _SignUpState extends State<SignUp> {
 
     adduse(Uid, uname);
 
-    Provider.of<Pro>(context,listen: false).setUid(Uid ?? "");
-    print("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
-    print(Provider.of<Pro>(context,listen: false).uid);
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+    Provider.of<Pro>(context, listen: false).setUid(Uid ?? "");
+    print(
+        "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+    print(Provider.of<Pro>(context, listen: false).uid);
+    print(
+        "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
   }
 
   @override
@@ -320,7 +323,10 @@ class _SignUpState extends State<SignUp> {
                 // }, child: Text("signin"))
 
                 GestureDetector(
-                  onTap: googlesignin,
+                  onTap: () {
+                    googlesignin();
+                     MainPage;
+                  },
                   child: Container(
                     height: 43,
                     width: double.infinity,
@@ -337,10 +343,16 @@ class _SignUpState extends State<SignUp> {
                           width: 40,
                           child: Image.asset("./images/google.png"),
                         ),
-                        Text(
-                          "SIGNIN WITH GOOGLE",
-                          style: TextStyle(
-                              letterSpacing: 1, fontWeight: FontWeight.bold),
+                        MaterialButton(
+                          onPressed: () {
+                            googlesignin();
+                            MainPage;
+                          },
+                          child: Text(
+                            "SIGNIN WITH GOOGLE",
+                            style: TextStyle(
+                                letterSpacing: 1, fontWeight: FontWeight.bold),
+                          ),
                         )
                       ],
                     ),

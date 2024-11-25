@@ -92,11 +92,12 @@ class _ChatPageState extends State<ChatPage> {
                     Expanded(child: Text(Receiver_name.toString(),style: TextStyle(color: Colors.grey.shade50,fontWeight: FontWeight.w500,fontSize: 18),)),
                     SizedBox(width: 1,),
                     Container(
-                      height: 55,
-                      width: 55,
+                      height: 53,
+                      width: 53,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
                           color: Colors.white),
+                          child: Icon(Icons.person,size: 34,color:   const Color.fromARGB(255, 54, 62, 88),),
                     )
                   ],
                 )),
